@@ -29,13 +29,16 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const papersCollection = client.db('papersDB').collection('papers')
+    const userCollection = client.db('userDB').collection('user')
 
+    // for showing ui
     app.get('/papers', async (req, res) => {
       const cursor = papersCollection.find();
       const result = await cursor.toArray();
       res.send(result)
     })
 
+    // showing view detail page
     app.get('/paper/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) }
@@ -43,10 +46,19 @@ async function run() {
       res.send(result)
     })
 
+    // create mongodb and showing on home page
     app.post('/papers', async (req, res) => {
       const newPaper = req.body;
       console.log(newPaper);
       const result = await papersCollection.insertOne(newPaper)
+      res.send(result)
+    })
+
+    // user related apis
+    app.post('/user', async (req, res) => {
+      const user = req.body;
+      console.log(user);
+      const result = await userCollection.insertOne(user)
       res.send(result)
     })
 
