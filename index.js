@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
 const port = process.env.PORT || 5000
 // middleware
@@ -36,12 +36,20 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/paper/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await papersCollection.findOne(query);
+      res.send(result)
+    })
+
     app.post('/papers', async (req, res) => {
       const newPaper = req.body;
       console.log(newPaper);
       const result = await papersCollection.insertOne(newPaper)
       res.send(result)
     })
+
 
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -53,9 +61,11 @@ async function run() {
 run().catch(console.dir);
 
 
-
-app.get('/', (req, res) => {
-  res.send('coffee making server is running')
+app.get('/craft-details/:id', async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) }
+  const result = await papersCollection.findOne(query);
+  res.send(result);
 })
 
 app.listen(port, () => {
