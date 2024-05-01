@@ -54,7 +54,7 @@ async function run() {
       res.send(result);
     })
 
-    // ata
+    // showing email
     app.get('/papers/:email', async (req, res) => {
       const email = req.params.email;
       const query = { email: email }
@@ -85,6 +85,34 @@ async function run() {
       res.send(result)
     })
 
+    // updated button's api is here
+
+    app.put('/update/:id', async (req, res) => {
+      const updatePapers = req.body;
+      const id = req.params.id;
+      console.log(id);
+      const filter = { _id: new ObjectId(id) }
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: updatePapers
+        // {
+        //   name: updatePapers.name,
+        //   description: updatePapers.description,
+        //   price: updatePapers.price,
+        //   subName: updatePapers.subName,
+        //   processingTime: updatePapers.processingTime,
+        //   rating: updatePapers.rating,
+        //   photo: updatePapers.photo,
+        //   email: updatePapers.email,
+        //   userName: updatePapers.userName
+        // }
+
+
+      }
+      const result = await papersCollection.updateOne(filter, updateDoc, options);
+      res.send(result);
+    })
+
 
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -106,5 +134,5 @@ run().catch(console.dir);
 
 
 app.listen(port, () => {
-  console.log(`coffee server is running on port: ${port}`);
+  console.log(`Papers server is running on port: ${port}`);
 })
