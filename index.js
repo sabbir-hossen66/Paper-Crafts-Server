@@ -57,8 +57,8 @@ async function run() {
     // ata
     app.get('/papers/:email', async (req, res) => {
       const email = req.params.email;
-      const query = { email: new ObjectId(email) }
-      const result = await papersCollection.findOne(query);
+      const query = { email: email }
+      const result = await papersCollection.find(query).toArray();
       res.send(result);
     })
 
