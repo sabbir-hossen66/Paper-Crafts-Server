@@ -29,7 +29,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const papersCollection = client.db('papersDB').collection('papers')
-    const userCollection = client.db('userDB').collection('user')
+    const userCollection = client.db('papersDB').collection('user')
 
     // for showing ui
     app.get('/papers', async (req, res) => {
@@ -46,6 +46,23 @@ async function run() {
       res.send(result)
     })
 
+    // new added
+    app.get('/craft-details/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await papersCollection.findOne(query);
+      res.send(result);
+    })
+
+    // ata
+    app.get('/papers/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: new ObjectId(email) }
+      const result = await papersCollection.findOne(query);
+      res.send(result);
+    })
+
+
     // create mongodb and showing on home page
     app.post('/papers', async (req, res) => {
       const newPaper = req.body;
@@ -55,6 +72,12 @@ async function run() {
     })
 
     // user related apis
+    app.get('/user', async (req, res) => {
+      const cursor = userCollection.find();
+      const users = await cursor.toArray();
+      res.send(users)
+    })
+
     app.post('/user', async (req, res) => {
       const user = req.body;
       console.log(user);
@@ -73,12 +96,14 @@ async function run() {
 run().catch(console.dir);
 
 
-app.get('/craft-details/:id', async (req, res) => {
-  const id = req.params.id;
-  const query = { _id: new ObjectId(id) }
-  const result = await papersCollection.findOne(query);
-  res.send(result);
-})
+// app.get('/craft-details/:id', async (req, res) => {
+//   const id = req.params.id;
+//   const query = { _id: new ObjectId(id) }
+//   const result = await papersCollection.findOne(query);
+//   res.send(result);
+// })
+
+
 
 app.listen(port, () => {
   console.log(`coffee server is running on port: ${port}`);
