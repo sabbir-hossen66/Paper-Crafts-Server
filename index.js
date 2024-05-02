@@ -16,6 +16,9 @@ const uri = `mongodb+srv://${ process.env.DB_USER }:${ process.env.DB_PASS }@clu
 
 
 
+
+
+
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -25,6 +28,16 @@ const client = new MongoClient(uri, {
   }
 });
 
+
+const dbConnect = async () => {
+  try {
+    client.connect()
+    console.log('DB Connected Successfully✅')
+  } catch (error) {
+    console.log(error.name, error.message)
+  }
+}
+dbConnect()
 
 const papersCollection = client.db('papersDB').collection('papers')
 const userCollection = client.db('papersDB').collection('user')
