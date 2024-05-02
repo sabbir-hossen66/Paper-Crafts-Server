@@ -104,19 +104,6 @@ async function run() {
       const options = { upsert: true };
       const updateDoc = {
         $set: updatePapers
-        // {
-        //   name: updatePapers.name,
-        //   description: updatePapers.description,
-        //   price: updatePapers.price,
-        //   subName: updatePapers.subName,
-        //   processingTime: updatePapers.processingTime,
-        //   rating: updatePapers.rating,
-        //   photo: updatePapers.photo,
-        //   email: updatePapers.email,
-        //   userName: updatePapers.userName
-        // }
-
-
       }
       const result = await papersCollection.updateOne(filter, updateDoc, options);
       res.send(result);
