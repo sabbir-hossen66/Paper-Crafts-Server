@@ -85,6 +85,15 @@ async function run() {
       res.send(result)
     })
 
+    // delete apis method
+
+    app.delete('/paper/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await papersCollection.deleteOne(query)
+      res.send(result)
+    })
+
     // updated button's api is here
 
     app.put('/update/:id', async (req, res) => {
