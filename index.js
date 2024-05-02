@@ -12,7 +12,7 @@ app.use(express.json())
 
 // mongodb connected
 
-const uri = `mongodb+srv://${ process.env.DB_USER }:${ process.env.DB_PASS }@cluster0.neggqyg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.neggqyg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 
 
@@ -41,6 +41,10 @@ dbConnect()
 
 const papersCollection = client.db('papersDB').collection('papers')
 const userCollection = client.db('papersDB').collection('user')
+
+app.get('/', (req, res) => {
+  res.send('server paper is going')
+})
 
 // for showing ui
 app.get('/papers', async (req, res) => {
@@ -122,5 +126,5 @@ app.put('/update/:id', async (req, res) => {
 
 
 app.listen(port, () => {
-  console.log(`Papers server is running on port: ${ port }`);
+  console.log(`Papers server is running on port: ${port}`);
 })
